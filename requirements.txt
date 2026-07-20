@@ -1,3 +1,5 @@
+# pykrx가 임포트하는 pkg_resources는 Python 3.12+ 환경에 기본 포함되지 않으므로 setuptools 필요
+setuptools
 streamlit>=1.35
 plotly>=5.20
 pandas>=2.0
