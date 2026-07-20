@@ -22,7 +22,7 @@ st.caption(
 )
 
 # ---------------------------------------------------------------- 데이터 로드
-with st.spinner("KRX 데이터를 불러오는 중입니다... (최초 실행 시 수십 초 걸릴 수 있습니다)"):
+with st.spinner("데이터를 불러오는 중입니다... (최초 실행 시 수십 초 걸릴 수 있습니다)"):
     try:
         prices_all = load_price_data()
     except Exception as e:
@@ -146,6 +146,6 @@ st.caption("겹치는 거래일 구간의 일간 수익률로 계산한 피어�
 last_date = prices.index.max().strftime("%Y-%m-%d")
 st.markdown("---")
 st.caption(
-    f"데이터: KRX (pykrx) · 최종 거래일: {last_date} · "
+    f"데이터: KRX (FinanceDataReader) · 최종 거래일: {last_date} · "
     "일간 종가 기준, 배당/분배금 미반영 · 투자 판단의 책임은 본인에게 있습니다."
 )

@@ -1,8 +1,8 @@
 """종목코드/티커 설정.
 
 ETF를 교체하거나 추가하려면 이 파일의 TICKERS 딕셔너리만 수정하면 됩니다.
-- type: "index"  -> pykrx 지수 조회 (stock.get_index_ohlcv_by_date)
-- type: "etf"    -> pykrx ETF 조회 (stock.get_etf_ohlcv_by_date)
+- code: FinanceDataReader.DataReader 에 넘길 심볼. 지수는 "KS200"처럼 문자열 코드,
+  종목/ETF는 6자리 종목코드를 사용합니다.
 - benchmark: True 인 항목이 초과수익률(알파)/트래킹에러 계산의 기준이 됩니다. (정확히 1개)
 """
 
@@ -11,16 +11,14 @@ DATA_START_DATE = "20200101"
 
 TICKERS = {
     "KOSPI200": {
-        "code": "1028",          # KRX 지수코드: 코스피 200
+        "code": "KS200",         # FinanceDataReader 지수코드: 코스피 200
         "name": "KOSPI200",
-        "type": "index",
         "benchmark": True,
         "color": "#636EFA",
     },
     "TIGER_AI_KOREA_GROWTH": {
         "code": "365040",
         "name": "TIGER AI코리아그로스액티브",
-        "type": "etf",
         "benchmark": False,
         "color": "#EF553B",
     },
@@ -29,21 +27,18 @@ TICKERS = {
     "KODEX_K_INNOVATION": {
         "code": "373490",
         "name": "KODEX K-이노베이션액티브",
-        "type": "etf",
         "benchmark": False,
         "color": "#00CC96",
     },
     "TIMEFOLIO_KSTOCK": {
         "code": "385710",
         "name": "TIMEFOLIO Kstock액티브",
-        "type": "etf",
         "benchmark": False,
         "color": "#AB63FA",
     },
     "ASSETPLUS_KOREA_PLATFORM": {
-        "code": "403450",
+        "code": "407820",
         "name": "에셋플러스 코리아플랫폼액티브",
-        "type": "etf",
         "benchmark": False,
         "color": "#FFA15A",
     },

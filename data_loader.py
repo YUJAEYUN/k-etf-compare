@@ -1,6 +1,6 @@
-"""pykrx 기반 데이터 수집/캐싱.
+"""FinanceDataReader 기반 데이터 수집/캐싱.
 
-- 지수는 stock.get_index_ohlcv_by_date, ETF는 stock.get_etf_ohlcv_by_date 사용
+- 지수/ETF 모두 fdr.DataReader 로 조회 (로그인 불필요)
 - 일간 종가 기준, 거래일 인덱스로 정렬
 - 상장 초기 등 데이터가 없는 구간은 NaN 으로 남기고,
   중간 결측치만 forward fill 처리 (상장 이전 구간까지 채우지 않음)
@@ -8,26 +8,21 @@
 
 from datetime import datetime
 
+import FinanceDataReader as fdr
 import pandas as pd
 import streamlit as st
-from pykrx import stock
 
 from config import DATA_START_DATE, TICKERS
 
 
-def _fetch_close_series(code: str, asset_type: str, start: str, end: str) -> pd.Series:
+def _fetch_close_series(code: str, start: str, end: str) -> pd.Series:
     """단일 종목의 일간 종가 시리즈를 조회."""
-    if asset_type == "index":
-        df = stock.get_index_ohlcv_by_date(start, end, code)
-    elif asset_type == "etf":
-        df = stock.get_etf_ohlcv_by_date(start, end, code)
-    else:
-        raise ValueError(f"알 수 없는 type: {asset_type}")
+    df = fdr.DataReader(code, start, end)
 
     if df is None or df.empty:
         return pd.Series(dtype=float)
 
-    close = df["종가"].astype(float)
+    close = df["Close"].astype(float)
     close.index = pd.to_datetime(close.index)
     # 거래정지 등으로 종가가 0으로 내려오는 행 제거
     close = close[close > 0]
@@ -47,7 +42,7 @@ def load_price_data(end_date: str | None = None) -> pd.DataFrame:
     errors = {}
     for key, info in TICKERS.items():
         try:
-            s = _fetch_close_series(info["code"], info["type"], DATA_START_DATE, end)
+            s = _fetch_close_series(info["code"], DATA_START_DATE, end)
             if not s.empty:
                 series[key] = s
             else:

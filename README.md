@@ -8,11 +8,11 @@ KOSPI200 지수와 이를 기초(비교)지수로 하는 국내 액티브 ETF들
 
 | 구분 | 종목 | 코드 |
 |---|---|---|
-| 기초지수 | KOSPI200 | 1028 (KRX 지수코드) |
+| 기초지수 | KOSPI200 | KS200 (FinanceDataReader 지수코드) |
 | 액티브 ETF | TIGER AI코리아그로스액티브 | 365040 |
 | 액티브 ETF | KODEX K-이노베이션액티브 | 373490 |
 | 액티브 ETF | TIMEFOLIO Kstock액티브 | 385710 |
-| 액티브 ETF | 에셋플러스 코리아플랫폼액티브 | 403450 |
+| 액티브 ETF | 에셋플러스 코리아플랫폼액티브 | 407820 |
 
 종목 교체/추가는 `config.py` 의 `TICKERS` 딕셔너리만 수정하면 됩니다.
 
@@ -31,21 +31,21 @@ pip install -r requirements.txt
 streamlit run app.py
 ```
 
-첫 실행 시 KRX에서 데이터를 받아오므로 수십 초 정도 걸릴 수 있으며,
+첫 실행 시 FinanceDataReader로 데이터를 받아오므로 수십 초 정도 걸릴 수 있으며,
 이후에는 `@st.cache_data` 캐시(6시간 TTL)로 빠르게 로드됩니다.
 
 ## 프로젝트 구조
 
 ```
 app.py           # 메인 UI (Streamlit)
-data_loader.py   # pykrx 데이터 수집/캐싱
+data_loader.py   # FinanceDataReader 데이터 수집/캐싱
 metrics.py       # 성과지표 계산 로직
 config.py        # 종목코드/기간/상수 설정
 ```
 
 ## 데이터 처리 원칙
 
-- KRX 공식 데이터(pykrx), 일간 종가 기준
+- KRX 데이터(FinanceDataReader), 일간 종가 기준
 - 배당/분배금은 1차 버전에서 미반영 (가격수익률 기준)
 - 거래일 기준 정렬, 중간 결측치는 forward fill
 - 상장 이전 구간은 NaN으로 유지되어 차트에서 자연스럽게 상장일부터 표시
